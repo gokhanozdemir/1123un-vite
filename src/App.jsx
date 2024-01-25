@@ -12,6 +12,7 @@ function App() {
   const dispatch = useDispatch()
 
   const addFavHandler = () => {
+    dispatch(fetchFact())
     dispatch(addFav(current))
   }
 

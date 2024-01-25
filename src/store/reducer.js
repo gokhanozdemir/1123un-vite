@@ -6,8 +6,16 @@ import {
   FETCH_LOADING,
 } from "./actions";
 
+function writeFavsToLocalStorage(state) {
+  localStorage.setItem("catFacts", JSON.stringify(state.favs));
+}
+
+function readFavsFromLocalStorage() {
+  return JSON.parse(localStorage.getItem("catFacts"));
+}
+
 const initial = {
-  favs: [],
+  favs: readFavsFromLocalStorage() || [],
   current: "redux el sallıyor",
   error: null,
   loading: true,
@@ -41,6 +49,7 @@ export default function reducer(state = initial, action) {
         ...state,
         favs: [action.payload, ...state.favs],
       };
+      writeFavsToLocalStorage(newAddedState);
       return newAddedState;
 
     case REMOVE_FAV:
@@ -48,7 +57,7 @@ export default function reducer(state = initial, action) {
         ...state,
         favs: state.favs.filter((f) => f !== action.payload),
       };
-
+      writeFavsToLocalStorage(newRemovedState);
       return newRemovedState;
 
     default:
