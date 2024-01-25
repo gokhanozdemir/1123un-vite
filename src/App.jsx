@@ -8,16 +8,12 @@ import { fetchFact } from './store/actions'
 import { useSelector, useDispatch } from 'react-redux'
 
 function App() {
-  const current = useSelector((state) => state.current)
-  const [count, setCount] = useState(0)
-  const [fact, setFact] = useState("")
-  const [favs, setFavs] = useState([])
+  const { current, favs, loading, error } = useSelector((state) => state)
   const dispatch = useDispatch()
 
   const addFav = () => {
-    setFavs([...favs, fact])
-  }
 
+  }
 
   useEffect(() => {
     dispatch(fetchFact())
@@ -25,21 +21,25 @@ function App() {
 
   return (
     <div className="App">
-
       <p>🐈  🐈‍⬛</p>
-      <h1>{current}</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <button onClick={addFav}>
-          favladım
-        </button>
-        <button onClick={() => dispatch(fetchFact)}>
-          fetch fact Sebastian
-        </button>
-      </div>
+      {loading && <p>loading...</p>}
+      {error && <p>error...</p>}
 
+
+      {current && <>
+
+        <h1>{current}</h1>
+        <div className="card">
+
+          <button onClick={addFav}>
+            favladım
+          </button>
+          <button onClick={() => dispatch(fetchFact)}>
+            fetch fact Sebastian
+          </button>
+
+        </div>
+      </>}
       <div>
         <h2>Favoriler</h2>
         {favs.map((fav, index) => (
@@ -48,6 +48,7 @@ function App() {
       </div>
 
     </div>
+
   )
 }
 

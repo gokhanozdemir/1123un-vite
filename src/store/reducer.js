@@ -1,4 +1,10 @@
-import { FETCH, ADD_FAV, REMOVE_FAV } from "./actions";
+import {
+  FETCH_SUCCESS,
+  ADD_FAV,
+  REMOVE_FAV,
+  FETCH_ERROR,
+  FETCH_LOADING,
+} from "./actions";
 
 const initial = {
   favs: [],
@@ -9,10 +15,25 @@ const initial = {
 
 export default function reducer(state = initial, action) {
   switch (action.type) {
-    case FETCH:
+    case FETCH_SUCCESS:
       return {
         ...state,
         current: action.payload,
+        loading: false,
+        error: null,
+      };
+    case FETCH_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+        current: null,
+      };
+    case FETCH_LOADING:
+      return {
+        ...state,
+        loading: true,
+        current: null,
       };
     default:
       return state;
