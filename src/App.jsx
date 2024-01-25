@@ -1,33 +1,60 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+import axios from 'axios'
+
+import { useSelector, useDispatch } from 'react-redux'
+
 function App() {
+  const current = useSelector((state) => state.current)
   const [count, setCount] = useState(0)
+  const [fact, setFact] = useState("")
+  const [favs, setFavs] = useState([])
+
+  useEffect(() => {
+    axios.get('https://catfact.ninja/fact')
+      .then(function (response) {
+        // handle success
+        console.log(response);
+        setFact(response.data.fact)
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(function () {
+        // always executed
+      });
+  }, [])
+
+
+  const addFav = () => {
+    setFavs([...favs, fact])
+  }
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+
+      <p>🐈  🐈‍⬛</p>
+      <h1>{current}</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <button onClick={addFav}>
+          favladım
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+      <div>
+        <h2>Favoriler</h2>
+        {favs.map((fav, index) => (
+          <p key={index}>{fav}</p>
+        ))}
+      </div>
+
     </div>
   )
 }
