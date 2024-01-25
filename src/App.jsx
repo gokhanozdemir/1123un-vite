@@ -30,7 +30,7 @@ function App() {
       {loading && <p>loading...</p>}
       {error && <p>error...</p>}
       {current && <>
-        <div className="card">
+        <div className="">
           <button onClick={addFavHandler}>
             favladım
           </button>
@@ -42,7 +42,7 @@ function App() {
 
       </>}
       <div>
-        <h2>Favoriler</h2>
+        <h2 className=''>Favoriler</h2>
         {favs.map((fav, index) => (
           <div>
             <p key={index}>{fav}</p>
