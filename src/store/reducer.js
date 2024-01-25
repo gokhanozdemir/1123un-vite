@@ -35,6 +35,22 @@ export default function reducer(state = initial, action) {
         loading: true,
         current: null,
       };
+
+    case ADD_FAV:
+      const newAddedState = {
+        ...state,
+        favs: [action.payload, ...state.favs],
+      };
+      return newAddedState;
+
+    case REMOVE_FAV:
+      const newRemovedState = {
+        ...state,
+        favs: state.favs.filter((f) => f !== action.payload),
+      };
+
+      return newRemovedState;
+
     default:
       return state;
   }

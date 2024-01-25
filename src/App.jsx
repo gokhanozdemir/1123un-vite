@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-import { fetchFact } from './store/actions'
+import { fetchFact, addFav, removeFav } from './store/actions'
 
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -11,8 +11,12 @@ function App() {
   const { current, favs, loading, error } = useSelector((state) => state)
   const dispatch = useDispatch()
 
-  const addFav = () => {
+  const addFavHandler = () => {
+    dispatch(addFav(current))
+  }
 
+  const removeFavHandler = (fav) => {
+    dispatch(removeFav(fav))
   }
 
   useEffect(() => {
@@ -24,26 +28,28 @@ function App() {
       <p>🐈  🐈‍⬛</p>
       {loading && <p>loading...</p>}
       {error && <p>error...</p>}
-
-
       {current && <>
-
-        <h1>{current}</h1>
         <div className="card">
-
-          <button onClick={addFav}>
+          <button onClick={addFavHandler}>
             favladım
           </button>
-          <button onClick={() => dispatch(fetchFact)}>
+          <button onClick={() => dispatch(fetchFact())}>
             fetch fact Sebastian
           </button>
-
         </div>
+        <h1>{current}</h1>
+
       </>}
       <div>
         <h2>Favoriler</h2>
         {favs.map((fav, index) => (
-          <p key={index}>{fav}</p>
+          <div>
+            <p key={index}>{fav}</p>
+            <button onClick={() => removeFavHandler(fav)}>
+              unfarovladım
+            </button>
+          </div>
+
         ))}
       </div>
 

@@ -14,10 +14,10 @@ export const addFav = (fact) => {
   };
 };
 
-export const removeFav = (id) => {
+export const removeFav = (fact) => {
   return {
     type: REMOVE_FAV,
-    payload: id,
+    payload: fact,
   };
 };
 
