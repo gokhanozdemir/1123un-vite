@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-import axios from 'axios'
+import { fetchFact } from './store/actions'
 
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -12,27 +12,16 @@ function App() {
   const [count, setCount] = useState(0)
   const [fact, setFact] = useState("")
   const [favs, setFavs] = useState([])
-
-  useEffect(() => {
-    axios.get('https://catfact.ninja/fact')
-      .then(function (response) {
-        // handle success
-        console.log(response);
-        setFact(response.data.fact)
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
-      });
-  }, [])
-
+  const dispatch = useDispatch()
 
   const addFav = () => {
     setFavs([...favs, fact])
   }
+
+
+  useEffect(() => {
+    dispatch(fetchFact())
+  }, [])
 
   return (
     <div className="App">
@@ -45,6 +34,9 @@ function App() {
         </button>
         <button onClick={addFav}>
           favladım
+        </button>
+        <button onClick={() => dispatch(fetchFact)}>
+          fetch fact Sebastian
         </button>
       </div>
 
