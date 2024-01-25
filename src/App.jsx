@@ -3,59 +3,59 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-import axios from 'axios'
+import { fetchFact, addFav, removeFav } from './store/actions'
 
 import { useSelector, useDispatch } from 'react-redux'
 
 function App() {
-  const current = useSelector((state) => state.current)
-  const [count, setCount] = useState(0)
-  const [fact, setFact] = useState("")
-  const [favs, setFavs] = useState([])
+  const { current, favs, loading, error } = useSelector((state) => state)
+  const dispatch = useDispatch()
+
+  const addFavHandler = () => {
+    dispatch(fetchFact())
+    dispatch(addFav(current))
+  }
+
+  const removeFavHandler = (fav) => {
+    dispatch(removeFav(fav))
+  }
 
   useEffect(() => {
-    axios.get('https://catfact.ninja/fact')
-      .then(function (response) {
-        // handle success
-        console.log(response);
-        setFact(response.data.fact)
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
-      });
+    dispatch(fetchFact())
   }, [])
-
-
-  const addFav = () => {
-    setFavs([...favs, fact])
-  }
 
   return (
     <div className="App">
-
       <p>🐈  🐈‍⬛</p>
-      <h1>{current}</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <button onClick={addFav}>
-          favladım
-        </button>
-      </div>
+      {loading && <p>loading...</p>}
+      {error && <p>error...</p>}
+      {current && <>
+        <div className="">
+          <button onClick={addFavHandler}>
+            favladım
+          </button>
+          <button onClick={() => dispatch(fetchFact())}>
+            fetch fact Sebastian
+          </button>
+        </div>
+        <h1>{current}</h1>
 
+      </>}
       <div>
-        <h2>Favoriler</h2>
+        <h2 className=''>Favoriler</h2>
         {favs.map((fav, index) => (
-          <p key={index}>{fav}</p>
+          <div>
+            <p key={index}>{fav}</p>
+            <button onClick={() => removeFavHandler(fav)}>
+              unfarovladım
+            </button>
+          </div>
+
         ))}
       </div>
 
     </div>
+
   )
 }
 
