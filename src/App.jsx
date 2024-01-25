@@ -5,7 +5,10 @@ import './App.css'
 
 import axios from 'axios'
 
+import { useSelector, useDispatch } from 'react-redux'
+
 function App() {
+  const current = useSelector((state) => state.current)
   const [count, setCount] = useState(0)
   const [fact, setFact] = useState("")
   const [favs, setFavs] = useState([])
@@ -35,7 +38,7 @@ function App() {
     <div className="App">
 
       <p>🐈  🐈‍⬛</p>
-      <h1>{fact}</h1>
+      <h1>{current}</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
